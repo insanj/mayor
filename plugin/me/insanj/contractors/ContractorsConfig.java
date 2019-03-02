@@ -23,7 +23,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class ContractorsConfig {
     public final String SCHEMATICS_PATH = "schematics";
     public final String USE_DEFAULT_SCHEMATICS_PATH = "use_default_schematics";
-    public final String DEFAULT_SCHEMATIC_PATH = "default.schematic";
+    public final String DEFAULT_SCHEMATIC_PATH = "plugins/contractors/default.schematic";
     
     private Contractors plugin;
 
