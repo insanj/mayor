@@ -89,11 +89,8 @@ public class ContractorsSchematicHandler {
                     int index = y * width * length + z * width + x;
                     Block block = new Location(world, x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
 
-                    // Material material = findMaterial((int)blocks[index]);
-                    // Material materialWithData = Bukkit.getUnsafe().fromLegacy(new MaterialData(material, blockData[index]));
                     Material material = convertMaterial((int)blocks[index], blockData[index]);
                     block.setType(material);
-                    //block.setBlockData(materialWithData);
                     // block.setTypeIdAndData(blocks[index], blockData[index], true);
                 }
             }
@@ -109,65 +106,5 @@ public class ContractorsSchematicHandler {
         }
         return null;
     }
-
-
-    public Material findMaterial(int typeId) {
-        final Material[] foundMaterial = new Material[1];
-
-        EnumSet.allOf(Material.class).forEach(material -> {
-            if (material.getId() == typeId) {
-                foundMaterial[0] = material;
-            }
-        });
-
-        return foundMaterial[0];
-    }
-
- 
-    /*
-    public static ContractorsSchematic loadSchematic(File file) throws IOException
-    {
-        FileInputStream stream = new FileInputStream(file);
-        NBTInputStream nbtStream = new NBTInputStream(new GZIPInputStream(stream));
- 
-        CompoundTag schematicTag = (CompoundTag) nbtStream.readTag();
-        if (!schematicTag.getName().equals("Schematic")) {
-            throw new IllegalArgumentException("Tag \"Schematic\" does not exist or is not first");
-        }
- 
-        Map<String, Tag> schematic = schematicTag.getValue();
-        if (!schematic.containsKey("Blocks")) {
-            throw new IllegalArgumentException("Schematic file is missing a \"Blocks\" tag");
-        }
- 
-        short width = getChildTag(schematic, "Width", ShortTag.class).getValue();
-        short length = getChildTag(schematic, "Length", ShortTag.class).getValue();
-        short height = getChildTag(schematic, "Height", ShortTag.class).getValue();
- 
-        String materials = getChildTag(schematic, "Materials", StringTag.class).getValue();
-        if (!materials.equals("Alpha")) {
-            throw new IllegalArgumentException("Schematic file is not an Alpha schematic");
-        }
- 
-        byte[] blocks = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
-        byte[] blockData = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
-        return new ContractorsSchematic(file.name, blocks, blockData, width, length, height);
-    }
- */
-
- /*
-    private static <T extends Tag> T getChildTag(Map<String, Tag> items, String key, Class<T> expected) throws IllegalArgumentException
-    {
-        if (!items.containsKey(key)) {
-            throw new IllegalArgumentException("Schematic file is missing a \"" + key + "\" tag");
-        }
-        Tag tag = items.get(key);
-        if (!expected.isInstance(tag)) {
-            throw new IllegalArgumentException(key + " tag is not of tag type " + expected.getName());
-        }
-        return expected.cast(tag);
-    }
-*/
 }
-
 
