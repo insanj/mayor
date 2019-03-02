@@ -1,0 +1,5 @@
+name: contractors
+main: me.insanj.contractors.Contractors
+version: 0.1.0
+description: turn villagers into powerful city builders
+api-version: 1.13
