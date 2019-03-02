@@ -23,7 +23,7 @@ Contractors was not built using Eclipse or any other IDE. Although you can use o
 
 - [Make](https://www.gnu.org/software/make/#download) to run the [makefile](https://github.com/insanj/contractors/blob/master/makefile), although each command inside this file can be ran on its own
 - [spigot](https://getbukkit.org/download/spigot)`.jar` or `bukkit.jar` version **1.13.2** or above, currently expected in a local `external/` directory for building, and a `server/` directory for running
-- [jnbt](https://sourceforge.net/projects/jnbt/) expected in `external/` in order to parse schematic files
+- [craftbukkit](https://getbukkit.org/download) expected in `external/` in order to parse schematic files
 - [Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html) 10 or above, required for `javac` and `jar` to run
 
 > NOTE: Make sure the Java version on your server and the Java version on the machine that builds Contractors are the same, otherwise Bukkit/Spitgot will not allow it to run.

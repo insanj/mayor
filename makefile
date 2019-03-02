@@ -3,12 +3,12 @@ SOURCE_PATH=plugin
 BUILD_PATH=build
 EXTERNAL_PATH=external
 SERVER_PATH=server
-BUKKIT_JAR_FILENAME=spigot.jar
+CRAFTBUKKIT_JAR_FILENAME=craftbukkit-1.13.2.jar
+SPIGOT_JAR_FILENAME=spigot.jar
 GIT_TAG:=$(shell git describe --tags)
 OUTPUT_NAME=contractors
 OUTPUT_VERSIONED_NAME=$(OUTPUT_NAME)-$(GIT_TAG)
-JNBT_JAR_FILENAME=jnbt-1.1.jar
-JAR_DEPS_PATH=$(EXTERNAL_PATH)/$(BUKKIT_JAR_FILENAME):$(EXTERNAL_PATH)/$(JNBT_JAR_FILENAME)
+JAR_DEPS_PATH=$(EXTERNAL_PATH)/$(SPIGOT_JAR_FILENAME):$(EXTERNAL_PATH)/$(CRAFTBUKKIT_JAR_FILENAME)
 
 .PHONY: all
 all: plugin server
@@ -20,6 +20,7 @@ plugin:
 	mkdir $(BUILD_PATH) && mkdir $(BUILD_PATH)/bin
 	# step 2 compile the plugin into the bin dir
 	javac -cp "$(JAR_DEPS_PATH)" -d $(BUILD_PATH)/bin $(SOURCE_PATH)/me/insanj/$(OUTPUT_NAME)/*.java
+	#  jar tf external/craftbukkit-1.13.2.jar > hello.txt
 	# step 3 copy config .yml to a new "build in progress" directory
 	-cp -r $(SOURCE_PATH)/*.yml $(BUILD_PATH)/bin/	
 	# step 3.5 copy all schematics to the build dir
@@ -35,7 +36,7 @@ plugin:
 .PHONY: server
 server:
 	# step 7 run the server!
-	cd $(SERVER_PATH) && java -Xms1G -Xmx1G -jar -DIReallyKnowWhatIAmDoingISwear $(BUKKIT_JAR_FILENAME)
+	cd $(SERVER_PATH) && java -Xms1G -Xmx1G -jar -DIReallyKnowWhatIAmDoingISwear $(SPIGOT_JAR_FILENAME)
 
 .PHONY: webapp
 webapp:

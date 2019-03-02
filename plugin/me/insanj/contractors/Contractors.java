@@ -26,20 +26,21 @@ import org.bukkit.inventory.ShapedRecipe;
 
 public class Contractors extends JavaPlugin {
     public ContractorsConfig config = new ContractorsConfig(this);
-    public ContractorsSchematicHandler handler = new ContractorsSchematicHandler();
+    public ContractorsSchematicHandler handler = new ContractorsSchematicHandler(this);
 
     @Override
     public void onEnable() {
         // (1) load all schematics from disk
         List<String> schematicsPaths = config.getSchematicPaths();
+       
         // (2) loop thru and parse each NBT/.schematic file
-        HashMap<String, HashMap<String, List>> schematics = new HashMap<String, HashMap<String, List>>();
+        HashMap<String, HashMap<String, Object>> schematics = new HashMap<String, HashMap<String, Object>>();
         for (String path : schematicsPaths) {
-            HashMap<String, List> readFile = handler.readSchematicFile(path);
+            HashMap<String, Object> readFile = handler.readSchematicFile(path);
             schematics.put(path, readFile);
         }
+
         // (3) print out all the files so we can see what we got
         System.out.println(schematics.toString());
     }
-
 }
