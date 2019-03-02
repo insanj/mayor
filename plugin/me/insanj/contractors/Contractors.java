@@ -34,9 +34,9 @@ public class Contractors extends JavaPlugin {
         List<String> schematicsPaths = config.getSchematicPaths();
        
         // (2) loop thru and parse each NBT/.schematic file
-        HashMap<String, HashMap<String, Object>> schematics = new HashMap<String, HashMap<String, Object>>();
+        HashMap<String, ContractorsSchematic> schematics = new HashMap<String, ContractorsSchematic>();
         for (String path : schematicsPaths) {
-            HashMap<String, Object> readFile = handler.readSchematicFile(path);
+            ContractorsSchematic readFile = handler.readSchematicFile(path);
             schematics.put(path, readFile);
         }
 
