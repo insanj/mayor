@@ -31,11 +31,15 @@ public class ContractorsSchematicHandler {
         if (!name.endsWith(".schematic")) {
             name = name + ".schematic";
         }
-        File file = new File(plugin.getDataFolder() + "/schematics/" + name);
+        File file = new File(plugin.getDataFolder() + "/" + name);
         if (!file.exists()) {
             return null;
         }
 
+        return readSchematicFile(name, file);
+    }
+
+    public ContractorsSchematic readSchematicFile(String name, File file) {
         try {
             FileInputStream stream = new FileInputStream(file);
             NBTTagCompound nbtdata = NBTCompressedStreamTools.a(stream);

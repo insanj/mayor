@@ -21,44 +21,24 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ContractorsConfig {
-    public final String SCHEMATICS_PATH = "schematics";
-    public final String USE_DEFAULT_SCHEMATICS_PATH = "use_default_schematics";
-    public final String DEFAULT_SCHEMATIC_PATH = "default.schematic";
-    
-    private Contractors plugin;
-
-    public ContractorsConfig(Contractors givenPlugin) {
-        plugin = givenPlugin;
-        plugin.saveDefaultConfig();
-        plugin.reloadConfig();
+    private final Contractors plugin;
+    public ContractorsConfig(Contractors plugin) {
+        this.plugin = plugin;
     }
 
-    public List<String> getSchematicPaths() {
-        List<String> configSchematics = getConfigSchematicPaths();
-        List<String> combinedList = new ArrayList<String>(configSchematics);
-        if (plugin.getConfig().getBoolean(USE_DEFAULT_SCHEMATICS_PATH) == true) {
-            List<String> defaultSchematics = getDefaultSchematicPaths();
-            combinedList.addAll(defaultSchematics);
+    public ArrayList<File> getSchematicFiles() {
+        File pluginDataFolder = new File(plugin.getDataFolder() + "/");
+        if (!pluginDataFolder.exists()) {
+            pluginDataFolder.mkdir();
         }
 
-        return combinedList;
-    }
-
-    public List<String> getConfigSchematicPaths() {
-        try {
-            List<String> readConfigResult = (List<String>) plugin.getConfig().getList(SCHEMATICS_PATH);
-            if (readConfigResult == null) {
-                return new ArrayList<String>();
+        ArrayList<File> schematicFiles = new ArrayList<File>();
+        File[] pluginFolderListing = pluginDataFolder.listFiles();
+        for (File file : pluginFolderListing) {
+            if (file.isFile()) {
+                schematicFiles.add(file);
             }
-
-            return readConfigResult;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<String>();
         }
-    }
-
-    public List<String> getDefaultSchematicPaths() {
-        return Arrays.asList(DEFAULT_SCHEMATIC_PATH);
+        return schematicFiles;
     }
 }

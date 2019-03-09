@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.lang.Math;
+import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,13 +32,14 @@ public class Contractors extends JavaPlugin {
     @Override
     public void onEnable() {
         // (1) load all schematics from disk
-        List<String> schematicsPaths = config.getSchematicPaths();
+        ArrayList<File> schematicFiles = config.getSchematicFiles();
        
         // (2) loop thru and parse each NBT/.schematic file
         HashMap<String, ContractorsSchematic> schematics = new HashMap<String, ContractorsSchematic>();
-        for (String path : schematicsPaths) {
-            ContractorsSchematic readFile = handler.readSchematicFile(path);
-            schematics.put(path, readFile);
+        for (File file : schematicFiles) {
+            String fileName = file.getName();
+            ContractorsSchematic readFile = handler.readSchematicFile(fileName, file);
+            schematics.put(fileName, readFile);
         }
 
         // (3) print out all the files so we can see what we got
