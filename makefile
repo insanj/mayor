@@ -39,6 +39,6 @@ clean:
 .PHONY: server
 server:
 	# step 6 copy the JAR file into the server to run it!
-	-rm -r -f $(SERVER_PATH)/plugins && mkdir $(SERVER_PATH)/plugins
+	-rm -r -f $(SERVER_PATH)/plugins/*.jar && mkdir $(SERVER_PATH)/plugins
 	cp -R $(BUILD_PATH)/$(OUTPUT_VERSIONED_NAME).jar $(SERVER_PATH)/plugins/$(OUTPUT_VERSIONED_NAME).jar
 	cd $(SERVER_PATH) && java -Xms1G -Xmx1G -jar -DIReallyKnowWhatIAmDoingISwear $(CRAFTBUKKIT_JAR_FILENAME)

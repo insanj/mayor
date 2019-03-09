@@ -17,8 +17,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
+import org.bukkit.block.BlockState;
 
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_13_R2.NBTTagCompound;
+import net.minecraft.server.v1_13_R2.NBTCompressedStreamTools;
 
 public class ContractorsSchematicHandler {
     public final Contractors plugin;
@@ -91,17 +93,21 @@ public class ContractorsSchematicHandler {
             for (int y = 0; y < height; ++y) {
                 for (int z = 0; z < length; ++z) {
                     int index = y * width * length + z * width + x;
-                    Block block = new Location(world, x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
+                    Location l = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ());
+                    Block block = l.getBlock();
 
+                    int b = blocks[index] & 0xFF;//make the block unsigned, so that blocks with an id over 127, like quartz and emerald, can be pasted
                     Material material = convertMaterial((int)blocks[index], blockData[index]);
                     block.setType(material);
-                    // block.setTypeIdAndData(blocks[index], blockData[index], true);
+
+                    BlockState bs = block.getState();
+                    bs.setRawData(blockData[index]);
+                    bs.update(true);
                 }
             }
         }
     }
 
-    @SuppressWarnings("deprecation")
     public Material convertMaterial(int ID, byte Data) {
         for(Material i : EnumSet.allOf(Material.class)) {
             if(i.getId() == ID) {
