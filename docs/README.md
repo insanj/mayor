@@ -2,16 +2,24 @@
 <h3 align="center">🐘  turn villagers into powerful city builders</h3>
 
 <p align="center">
+  <a href="https://getbukkit.org/download/spigot">
+    <img src="https://img.shields.io/badge/minecraft-1.13.2-brown.svg" />
+  </a>
+  
+  <a href="https://getbukkit.org/download/spigot">
+    <img src="https://img.shields.io/badge/spigot-1.13-orange.svg" />
+  </a>
+  
+  <a href="https://getbukkit.org/download/craftbukkit">
+    <img src="https://img.shields.io/badge/craftbukkit-1.13.2-blue.svg" />
+  </a>
+  
   <a href="https://jdk.java.net/">
     <img src="https://img.shields.io/badge/java-10.0.2-red.svg" />
   </a>
   
-  <a href="https://getbukkit.org/download/craftbukkit">
-    <img src="https://img.shields.io/badge/bukkit-1.13.2-orange.svg" />
-  </a>
-  
   <a href="https://www.spigotmc.org/resources/">
-    <img src="https://img.shields.io/badge/🚀-Download%20on%20spigotmc.org-blue.svg" />
+    <img src="https://img.shields.io/badge/🚀-Download%20on%20spigotmc.org-green.svg" />
   </a>
 </p>
 
@@ -21,12 +29,17 @@ Contractors was not built using Eclipse or any other IDE. Although you can use o
 
 ### Requirements
 
-- [Make](https://www.gnu.org/software/make/#download) to run the [makefile](https://github.com/insanj/contractors/blob/master/makefile), although each command inside this file can be ran on its own
-- [spigot](https://getbukkit.org/download/spigot)`.jar` or `bukkit.jar` version **1.13.2** or above, currently expected in a local `external/` directory for building, and a `server/` directory for running
-- [craftbukkit](https://getbukkit.org/download) expected in `external/` in order to parse schematic files
+#### Tools
+- [make](https://www.gnu.org/software/make/#download) to run the [makefile](https://github.com/insanj/contractors/blob/master/makefile)
 - [Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html) 10 or above, required for `javac` and `jar` to run
 
 > NOTE: Make sure the Java version on your server and the Java version on the machine that builds Contractors are the same, otherwise Bukkit/Spitgot will not allow it to run.
+
+#### JARs
+- [spigot.jar](https://getbukkit.org/download/spigot) version **1.13** or above
+- [craftbukkit.jar](https://getbukkit.org/download) version **1.13** or above
+
+> NOTE: These files are expected in a folder called `external` that you should create within the repo after cloning. In addition, the `spigot.jar` will be used to launch a server in an expected `server` directory. Both these features are easy to understand and configure within the [makefile](https://github.com/insanj/contractors/blob/master/makefile).
 
 ### Commands
 
