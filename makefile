@@ -24,7 +24,7 @@ plugin:
 	# step 2 part 2 compile the plugin into the bin dir
 	javac -cp "$(JAR_DEPS_PATH)" -d $(BUILD_PATH)/bin $(FIND_JAVA_FILES)
 	# step 3 copy config .yml to a new "build in progress" directory
-	-cp -r $(SOURCE_PATH)/*.yml $(BUILD_PATH)/bin/	
+	-cp -r $(SOURCE_PATH)/*.yml $(BUILD_PATH)/bin/
 	# step 4 create JAR file using the "build in progress" folder
 	jar -cvf $(BUILD_PATH)/$(OUTPUT_VERSIONED_NAME).jar -C $(BUILD_PATH)/bin .
 
@@ -42,3 +42,8 @@ server:
 	-rm -r -f $(SERVER_PATH)/plugins/*.jar && mkdir $(SERVER_PATH)/plugins
 	cp -R $(BUILD_PATH)/$(OUTPUT_VERSIONED_NAME).jar $(SERVER_PATH)/plugins/$(OUTPUT_VERSIONED_NAME).jar
 	cd $(SERVER_PATH) && java -Xms1G -Xmx1G -jar -DIReallyKnowWhatIAmDoingISwear $(CRAFTBUKKIT_JAR_FILENAME)
+
+.PHONY: nbted
+nbted:
+	 nbted --print schematics/default.schematic > build/default.schematic.txt
+	 # install with cargo; converts any NBT file to a pretty-printed txt (can be converted back if needed)

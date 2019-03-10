@@ -3,7 +3,7 @@ package me.insanj.contractors;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
- 
+
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -84,11 +84,11 @@ public class ContractorsSchematicHandler {
     public void pasteSchematic(World world, Location loc, ContractorsSchematic schematic) {
         short[] blocks = schematic.blocks;
         byte[] blockData = schematic.data;
- 
+
         short length = schematic.length;
         short width = schematic.width;
         short height = schematic.height;
- 
+
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
                 for (int z = 0; z < length; ++z) {
@@ -97,7 +97,7 @@ public class ContractorsSchematicHandler {
                     Block block = l.getBlock();
 
                     int b = blocks[index] & 0xFF;//make the block unsigned, so that blocks with an id over 127, like quartz and emerald, can be pasted
-                    Material material = convertMaterial((int)blocks[index], blockData[index]);
+                    Material material = convertMaterial(b, blockData[index]);
                     block.setType(material);
 
                     BlockState bs = block.getState();
@@ -108,13 +108,13 @@ public class ContractorsSchematicHandler {
         }
     }
 
-    public Material convertMaterial(int ID, byte Data) {
-        for(Material i : EnumSet.allOf(Material.class)) {
-            if(i.getId() == ID) {
-                return Bukkit.getUnsafe().fromLegacy(new MaterialData(i, Data));
-            } 
+    public Material convertMaterial(int legacyMaterialId, byte legacyDataByte) {
+        EnumSet allMaterials = Material.values(); // or EnumSet.allOf(Material.class);
+        for(Material material : allMaterials) {
+            if (material.getId() == legacyMaterialId) {
+                return Bukkit.getUnsafe().fromLegacy(new MaterialData(legacyMaterialId, legacyDataByte));
+            }
         }
         return null;
     }
 }
-

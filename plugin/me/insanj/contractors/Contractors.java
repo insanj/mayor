@@ -29,12 +29,12 @@ public class Contractors extends JavaPlugin implements CommandExecutor {
     public ContractorsConfig config = new ContractorsConfig(this);
     public ContractorsSchematicHandler handler = new ContractorsSchematicHandler(this);
     public HashMap<String, ContractorsSchematic> schematics;
-    
+
     @Override
     public void onEnable() {
         // (1) load all schematics from disk
         ArrayList<File> schematicFiles = config.getSchematicFiles();
-       
+
         // (2) loop thru and parse each NBT/.schematic file
         HashMap<String, ContractorsSchematic> readSchematics = new HashMap<String, ContractorsSchematic>();
         for (File file : schematicFiles) {
@@ -56,7 +56,7 @@ public class Contractors extends JavaPlugin implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "No schematic name provided");
             return false;
         }
-        
+
         else if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Only players can execute this command");
             return false;
