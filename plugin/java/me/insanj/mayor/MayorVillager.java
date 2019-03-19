@@ -9,35 +9,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 
+import net.minecraft.server.v1_13_R2.MerchantRecipeList;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftVillager;
+
 // https://bukkit.org/threads/class-custom-vilagers-trade-items.338739/
 public class MayorVillager {
   private final MayorPlugin plugin;
 
   private Object ev;
-  private Object list;
+  private MerchantRecipeList list;
 
   private static final String bukkitversion = Bukkit.getServer().getClass().getPackage().getName().substring(23);
 
   public MayorVillager(MayorPlugin plugin, Villager villager) {
     this.plugin = plugin;
 
-    try {
-        Class<?> merchantrlist = Class.forName("net.minecraft.server." + bukkitversion + ".MerchantRecipeList");
-        list = merchantrlist.newInstance();
-
-        Class<?> craftvillager = Class.forName("org.bukkit.craftbukkit."+bukkitversion+".entity.CraftVillager");
-        Method handle = craftvillager.getMethod("getHandle");
-
-        ev = handle.invoke(craftvillager.cast(villager));
-    } catch (Exception e) {
-      /*
-      (NoSuchMethodException | SecurityException
-              | ClassNotFoundException | IllegalAccessException
-              | IllegalArgumentException | InvocationTargetException
-              | InstantiationException
-      */
-        plugin.logError(e);
-    }
+    list = new MerchantRecipeList();
+    ev = ((CraftVillager) villager).getHandle();
   }
 
   public MayorVillager addRecipe(ItemStack slotOne, ItemStack slotTwo, ItemStack output) {
@@ -50,11 +38,6 @@ public class MayorVillager {
           Object merchantRecipeObj = merchantRecipeConstructor.newInstance(toNMSItemStack(slotOne), toNMSItemStack(slotTwo),toNMSItemStack(output));
           add.invoke(list,merchantRecipeObj);
       } catch (Exception e) {
-        /*
-        ClassNotFoundException | NoSuchMethodException
-                | SecurityException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException | InstantiationException
-        */
         plugin.logError(e);
       }
 
@@ -73,11 +56,6 @@ public class MayorVillager {
 
           add.invoke(list,merchantRecipeObj);
       } catch (Exception e) {
-          /*
-          ClassNotFoundException | NoSuchMethodException
-                  | SecurityException | IllegalAccessException
-                  | IllegalArgumentException | InvocationTargetException | InstantiationException
-          */
           plugin.logError(e);
       }
 
@@ -90,12 +68,9 @@ public class MayorVillager {
           Method nmsCopy = craftItemstack.getDeclaredMethod("asNMSCopy", ItemStack.class);
           return nmsCopy.invoke(craftItemstack, i);
       } catch (Exception e) {
-        /*
-        ClassNotFoundException | NoSuchMethodException
-                | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        */
         plugin.logError(e);
       }
+
       return null;
   }
 
@@ -106,10 +81,6 @@ public class MayorVillager {
           f.set(ev, list);
           return true;
       } catch (Exception e) {
-        /*
-        NoSuchFieldException | SecurityException
-                | IllegalArgumentException | IllegalAccessException
-          */
           plugin.logError(e);
           return false;
       }

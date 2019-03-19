@@ -41,6 +41,10 @@ class MayorVillagerHandler {
   public boolean spawnVillager(Location location) {
     Villager villager = (Villager) location.getWorld().spawnEntity(location, EntityType.VILLAGER);
     villager.setCustomName(MAYOR_VILLAGER_DISPLAY_NAME);
-    return new MayorVillager(plugin, villager).addRecipe(tradeInputItem(), tradeOutputItem()).finish();
+
+    MayorVillager baseVillager = new MayorVillager(plugin, villager);
+    MayorVillager builtVillager = baseVillager.addRecipe(tradeInputItem(), tradeOutputItem());
+    boolean spawnSuccess = builtVillager.finish();
+    return spawnSuccess;
   }
 }
