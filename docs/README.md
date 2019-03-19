@@ -77,6 +77,9 @@ A lot of important work parsing and building structures from .schematic/NBT file
 - https://www.spigotmc.org/threads/tutorial-example-handle-structures.331243/
 - https://bukkit.org/threads/class-custom-vilagers-trade-items.338739/
 - https://bukkit.org/threads/entity-name-tag.142085/
+- https://dev.bukkit.org/projects/villager-trade-api
+- https://bukkit.org/threads/how-to-tell-if-user-clicks-top-or-bottom-inventory.112822/
+- https://www.spigotmc.org/threads/inventoryclickevent-get-villager-trade.284605/
 
 ## Authors
 

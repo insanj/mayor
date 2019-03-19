@@ -35,6 +35,7 @@ public class MayorPlugin extends JavaPlugin {
     public MayorConfig config = new MayorConfig(this);
     public MayorSchematicHandler schematicHandler = new MayorSchematicHandler(this);
     public MayorVillagerHandler villagerHandler = new MayorVillagerHandler(this);
+    public MayorVillagerTradeListener tradeListener = new MayorVillagerTradeListener(this);
     public MayorCommandExecutor executor;
     public HashMap<String, MayorSchematic> schematics;
     public HashMap<String, DefinedStructure> structures;
@@ -49,7 +50,10 @@ public class MayorPlugin extends JavaPlugin {
       structures = readStructures();
       getLogger().info("-> finished reading structure .nbts! " + structures.toString());
 
-      // (3) testing commands to generate schematics/structures
+      // (3) add trade listener to activate mayor villagers
+      Bukkit.getPluginManager().registerEvents(tradeListener, this);
+
+      // (4) testing commands to generate schematics/structures
       executor = new MayorCommandExecutor(schematicHandler, schematics, structures, villagerHandler);
       getCommand("mayor").setExecutor(executor);
     }
