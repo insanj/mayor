@@ -22,7 +22,7 @@
   </a>
 
   <a href="https://getbukkit.org/download/craftbukkit">
-    <img src="https://img.shields.io/badge/minecraft-1.13-purple.svg" />
+    <img src="https://img.shields.io/badge/minecraft-1.13.2-purple.svg" />
   </a>
 
   <a href="https://getbukkit.org/download/craftbukkit">

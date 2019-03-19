@@ -42,49 +42,65 @@ class MayorCommandExecutor implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length != 2) {
-            sender.sendMessage(ChatColor.RED + "No schematic name provided");
+        if (args.length != 1) {
+            sender.sendMessage(ChatColor.RED + "No schematic or structure name provided!");
             return false;
         }
 
-        else if (!(sender instanceof Player) || !sender.isOp()) {
-            sender.sendMessage(ChatColor.RED + "Only operator players can execute this command");
+        if (!(sender instanceof Player) || !sender.isOp()) {
+            sender.sendMessage(ChatColor.RED + "Only operator players can execute this command :(");
             return false;
         }
 
+        String argumentString = args[0];
         Player player = (Player) sender;
-        if (args[0].equals("structure")) {
-          String structureName = args[1];
+        Location target = player.getLocation();
+         // getTargetBlockExact(100, FluidCollisionMode.NEVER).getLocation();
+
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + "No target block found, make sure you're looking somewhere I can build!");
+          return false;
+        }
+
+        sender.sendMessage(ChatColor.BLUE + "Generating " + argumentString + "...");
+
+        if (argumentString.indexOf(".nbt") >= 0) {
+          if (structures == null || structures.size() <= 0) {
+              sender.sendMessage(ChatColor.RED + "No structures found in /plugins/mayor/structures/");
+              return false;
+          }
+
+          String structureName = argumentString;
           DefinedStructure structure = structures.get(structureName);
           if (structure == null) {
             sender.sendMessage(ChatColor.RED + "No structure found with the name: " + structureName);
             return false;
           }
 
-          Location location = player.getLocation();
-          MayorStructureHandler.insertSingleStructure(structure, location, EnumBlockRotation.NONE);
+          MayorStructureHandler.insertSingleStructure(structure, target, EnumBlockRotation.NONE);
+          sender.sendMessage(ChatColor.GREEN + String.format("Done building structure!"));
           return true;
         }
 
-        else if (schematics == null || schematics.size() <= 0) {
-            sender.sendMessage(ChatColor.RED + "No schematics found in /plugins/mayor/schematics/");
-            return false;
+        else if (argumentString.indexOf(".schematic") >= 0) {
+          if (schematics == null || schematics.size() <= 0) {
+              sender.sendMessage(ChatColor.RED + "No schematics found in /plugins/mayor/schematics/");
+              return false;
+          }
+
+          String schematicName = argumentString;
+          MayorSchematic schematic = schematics.get(schematicName);
+          if (schematic == null) {
+              sender.sendMessage(ChatColor.RED + "Could not find schematic with name: " + schematicName);
+              return false;
+          }
+
+          handler.pasteSchematic(player.getWorld(), target, schematic);
+          sender.sendMessage(ChatColor.GREEN + String.format("Done building schematic!"));
+          return true;
         }
 
-        String schematicName = args[1];
-        MayorSchematic schematic = schematics.get(schematicName);
-        if (schematic == null) {
-            sender.sendMessage(ChatColor.RED + "Could not find schematic with name: " + schematicName);
-            return false;
-        }
-
-        Location lookingLocation = player.getTargetBlockExact(100, FluidCollisionMode.NEVER).getLocation(); // player.getLocation();
-        if (lookingLocation == null) {
-          sender.sendMessage(ChatColor.RED + "No target block found, make sure you're looking somewhere I can build!");
-          return false;
-        }
-
-        handler.pasteSchematic(player.getWorld(), lookingLocation, schematic);
-        return true;
+        sender.sendMessage(ChatColor.RED + "Provided file must end with .schematic or .nbt, these are the only formats current supported.");
+        return false;
     }
 }

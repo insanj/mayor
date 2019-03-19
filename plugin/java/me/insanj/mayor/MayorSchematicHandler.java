@@ -63,7 +63,7 @@ public class MayorSchematicHandler {
             stream.close();
             return new MayorSchematic(name, sblocks, data, width, length, height);
         } catch (Exception e) {
-            e.printStackTrace();
+            plugin.logError(e);
         }
 
         return null;
@@ -84,8 +84,17 @@ public class MayorSchematicHandler {
                     Location l = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ());
                     Block block = l.getBlock();
 
-                    int b = blocks[index] & 0xFF;//make the block unsigned, so that blocks with an id over 127, like quartz and emerald, can be pasted
+                    // ??
+                    // int b = blocks[index] & 0xFF; <-- make the block unsigned, so that blocks with an id over 127, like quartz and emerald, can be pasted
+
+                    int b = (int)blocks[index];
                     Material material = convertMaterial(b, blockData[index]);
+                    if (material == null) {
+                      // incompatible material!!
+                      plugin.logError(new Exception("Unable to convert Material bytes from schematic file! Block integer: " + Integer.toString(b)));
+                      continue;
+                    }
+
                     block.setType(material);
 
                     BlockState bs = block.getState();
@@ -97,7 +106,7 @@ public class MayorSchematicHandler {
     }
 
     public Material convertMaterial(int legacyMaterialId, byte legacyDataByte) {
-        for (Material material : Material.values()) { // or EnumSet.allOf(Material.class);
+        for (Material material : EnumSet.allOf(Material.class)) {
             if (material.getId() == legacyMaterialId) {
                 return Bukkit.getUnsafe().fromLegacy(new MaterialData(material, legacyDataByte));
             }

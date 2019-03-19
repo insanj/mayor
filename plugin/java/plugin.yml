@@ -1,11 +1,11 @@
 name: mayor
 main: me.insanj.mayor.MayorPlugin
-version: 0.2.0
+version: 0.2.1
 description: hire minecraft villagers to build structures
 api-version: 1.13
 commands:
   mayor:
     description: Trigger building sequence starting at the position where you are looking
     usage: |
-      /mayor schematic <schematic_name>
-      /mayor structure <structure_name>
+      /mayor <schematic_name>
+      /mayor <structure_name>

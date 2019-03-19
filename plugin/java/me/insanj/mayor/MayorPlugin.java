@@ -87,4 +87,8 @@ public class MayorPlugin extends JavaPlugin {
 
       return readStructures;
     }
+
+    public void logError(Throwable e) {
+      getLogger().info(ExceptionUtils.getStackTrace(e));
+    }
 }
