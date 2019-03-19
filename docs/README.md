@@ -68,12 +68,15 @@ Mayor was not built using Eclipse or any other IDE. Although you can use one, th
 ## Thanks
 
 A lot of important work parsing and building structures from .schematic/NBT files was made possible by open source contributors on Bukkit and Spigot forums. In particular:
+
 - https://github.com/Shynixn/StructureBlockLib
 - https://www.spigotmc.org/threads/load-schematic-file-and-paste-at-custom-location.167277/
 - https://bukkit.org/threads/pasting-loading-schematics.87129/
 - https://www.spigotmc.org/threads/converting-item-id-and-damage-value-to-new-material-type.329614/
 - https://bukkit.org/threads/so-block-setdata-is-deprecated-whats-the-new-way-to-change-the-data-of-an-existing-block.189076/
 - https://www.spigotmc.org/threads/tutorial-example-handle-structures.331243/
+- https://bukkit.org/threads/class-custom-vilagers-trade-items.338739/
+- https://bukkit.org/threads/entity-name-tag.142085/
 
 ## Authors
 

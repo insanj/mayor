@@ -1,11 +1,12 @@
 name: mayor
 main: me.insanj.mayor.MayorPlugin
-version: 0.2.1
+version: 0.3.0
 description: hire minecraft villagers to build structures
 api-version: 1.13
 commands:
   mayor:
-    description: Trigger building sequence starting at the position where you are looking
+    description: Use Mayor testing features to instantly perform tasks
     usage: |
-      /mayor <schematic_name>
-      /mayor <structure_name>
+      Spawn Mayor Villager: /mayor
+      Generate Schematic: /mayor <schematic_name>.schematic
+      Generate Structure: /mayor <structure_name>.structure
