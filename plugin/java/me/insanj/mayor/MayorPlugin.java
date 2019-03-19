@@ -61,7 +61,6 @@ public class MayorPlugin extends JavaPlugin {
       HashMap<String, MayorSchematic> readSchematics = new HashMap<String, MayorSchematic>();
       for (File file : schematicFiles) {
           String fileName = file.getName();
-          File schematicFile = config.readFile(schematicFolderPath, fileName);
           MayorSchematic readFile = schematicHandler.readSchematicFile(fileName, file);
           readSchematics.put(fileName, readFile);
       }
@@ -77,13 +76,12 @@ public class MayorPlugin extends JavaPlugin {
       HashMap<String, DefinedStructure> readStructures = new HashMap<String, DefinedStructure>();
       for (File file : structureFiles) {
           String fileName = file.getName();
-          File structureFile = config.readFile(structuresFolderPath, fileName);
           try {
-            DefinedStructure readStructure = MayorStructureHandler.loadSingleStructure(structureFile);
+            DefinedStructure readStructure = MayorStructureHandler.loadSingleStructure(file);
             readStructures.put(fileName, readStructure);
           } catch (Exception e) {
             String errorMessage = ExceptionUtils.getStackTrace(e);
-            getLogger().info(String.format(":( error reading structure file %s: %s", fileName, errorMessage));
+            getLogger().info(String.format(":( error reading structure file %s:\n%s", fileName, errorMessage));
           }
       }
 

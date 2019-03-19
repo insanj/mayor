@@ -45,9 +45,13 @@ class MayorStructureHandler {
   * @return DefinedStructure - The new instance
   */
   public static DefinedStructure loadSingleStructure(File source) throws FileNotFoundException, IOException {
-      DefinedStructure structure = new DefinedStructure();
-      structure.b(NBTCompressedStreamTools.a(new FileInputStream(source)));
-      return structure;
+    if (source == null) {
+      throw new FileNotFoundException("Mayor cannot load structure when source file providing as parameter is null itself :(");
+    }
+
+    DefinedStructure structure = new DefinedStructure();
+    structure.b(NBTCompressedStreamTools.a(new FileInputStream(source)));
+    return structure;
   }
 
   /**
