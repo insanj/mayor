@@ -2,7 +2,7 @@ package me.insanj.mayor;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-
+import org.bukkit.Location;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.EventHandler;
@@ -16,6 +16,8 @@ import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.inventory.MerchantRecipe;
 
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftInventoryMerchant;
+
+import net.minecraft.server.v1_13_R2.DefinedStructure;
 import net.minecraft.server.v1_13_R2.InventoryMerchant;
 
 class MayorVillagerTradeListener implements Listener {
@@ -29,6 +31,10 @@ class MayorVillagerTradeListener implements Listener {
   public void onVillagerReplenishTrade(VillagerReplenishTradeEvent event) {
     if (event.getEntity().getName().equals("Mayor")) {
       plugin.getServer().broadcastMessage(ChatColor.GREEN + "The Mayor has agreed to build a new structure!");
+
+      Location location = event.getEntity().getLocation();
+      MayorStructure structure = plugin.structures.get("tree.nbt");
+      plugin.buildHandler.locateAndBuildStructure(structure, location);
     }
   }
 

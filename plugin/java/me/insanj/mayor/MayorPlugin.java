@@ -35,10 +35,11 @@ public class MayorPlugin extends JavaPlugin {
     public MayorConfig config = new MayorConfig(this);
     public MayorSchematicHandler schematicHandler = new MayorSchematicHandler(this);
     public MayorVillagerHandler villagerHandler = new MayorVillagerHandler(this);
+    public MayorBuildHandler buildHandler = new MayorBuildHandler(this);
     public MayorVillagerTradeListener tradeListener = new MayorVillagerTradeListener(this);
     public MayorCommandExecutor executor;
     public HashMap<String, MayorSchematic> schematics;
-    public HashMap<String, DefinedStructure> structures;
+    public HashMap<String, MayorStructure> structures;
 
     @Override
     public void onEnable() {
@@ -73,16 +74,16 @@ public class MayorPlugin extends JavaPlugin {
       return readSchematics;
     }
 
-    private HashMap<String, DefinedStructure> readStructures() {
+    private HashMap<String, MayorStructure> readStructures() {
       ArrayList<File> structureFiles = config.getStructureFiles();
 
       // loop thru and parse each NBT/structure file
       final String structuresFolderPath = MayorConfig.getStructuresFolderPath(this);
-      HashMap<String, DefinedStructure> readStructures = new HashMap<String, DefinedStructure>();
+      HashMap<String, MayorStructure> readStructures = new HashMap<String, MayorStructure>();
       for (File file : structureFiles) {
           String fileName = file.getName();
           try {
-            DefinedStructure readStructure = MayorStructureHandler.loadSingleStructure(file);
+            MayorStructure readStructure = MayorStructureHandler.loadSingleStructure(file);
             readStructures.put(fileName, readStructure);
           } catch (Exception e) {
             String errorMessage = ExceptionUtils.getStackTrace(e);
