@@ -29,6 +29,8 @@ import org.bukkit.FluidCollisionMode;
 
 import net.minecraft.server.v1_13_R2.DefinedStructure;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
 public class MayorPlugin extends JavaPlugin {
     public MayorConfig config = new MayorConfig(this);
     public MayorSchematicHandler schematicHandler = new MayorSchematicHandler(this);
@@ -38,46 +40,53 @@ public class MayorPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // (1) load all schematics from disk
-        ArrayList<File> schematicFiles = config.getSchematicFiles();
+      // (1) load all schematics from disk
+      schematics = readSchematics();
+      getLogger().info("-> finished reading .schematics! " + schematics.toString());
 
-        // (2) loop thru and parse each NBT/.schematic file
-        final String schematicFolderPath = MayorConfig.getSchematicsFolderPath(this);
-        HashMap<String, MayorSchematic> readSchematics = new HashMap<String, MayorSchematic>();
-        for (File file : schematicFiles) {
-            String fileName = file.getName();
-            File schematicFile = config.readFile(schematicFolderPath, fileName);
-            MayorSchematic readFile = schematicHandler.readSchematicFile(fileName, file);
-            readSchematics.put(fileName, readFile);
-        }
+      // (2) load all structures from
+      structures = readStructures();
+      getLogger().info("-> finished reading structure .nbts! " + structures.toString());
 
-        // (3) print out all the files so we can see what we got
-        getLogger().info(readSchematics.toString());
-        schematics = readSchematics;
+      // (3) testing commands to generate schematics/structures
+      executor = new MayorCommandExecutor(schematicHandler, schematics, structures);
+      getCommand("mayor").setExecutor(executor);
+    }
 
-        // (4) load all structures from disk
-        ArrayList<File> structureFiles = config.getStructureFiles();
+    private HashMap<String, MayorSchematic> readSchematics() {
+      ArrayList<File> schematicFiles = config.getSchematicFiles();
 
-        // (5) loop thru and parse each NBT/structure file
-        final String structuresFolderPath = MayorConfig.getStructuresFolderPath(this);
-        HashMap<String, DefinedStructure> readStructures = new HashMap<String, DefinedStructure>();
-        for (File file : structureFiles) {
-            String fileName = file.getName();
-            File structureFile = config.readFile(structuresFolderPath, fileName);
-            try {
-              DefinedStructure readStructure = MayorStructureHandler.loadSingleStructure(structureFile);
-              readStructures.put(fileName, readStructure);
-            } catch (Exception e) {
-              getLogger().info(e.getStackTrace().toString());
-            }
-        }
+      // loop thru and parse each NBT/.schematic file
+      final String schematicFolderPath = MayorConfig.getSchematicsFolderPath(this);
+      HashMap<String, MayorSchematic> readSchematics = new HashMap<String, MayorSchematic>();
+      for (File file : schematicFiles) {
+          String fileName = file.getName();
+          File schematicFile = config.readFile(schematicFolderPath, fileName);
+          MayorSchematic readFile = schematicHandler.readSchematicFile(fileName, file);
+          readSchematics.put(fileName, readFile);
+      }
 
-        // (6) print out all the files so we can see what we got
-        getLogger().info(readStructures.toString());
-        structures = readStructures;
+      return readSchematics;
+    }
 
-        // (7) testing commands to generate schematics/structures
-        executor = new MayorCommandExecutor(schematicHandler, schematics, structures);
-        getCommand("mayor").setExecutor(executor);
+    private HashMap<String, DefinedStructure> readStructures() {
+      ArrayList<File> structureFiles = config.getStructureFiles();
+
+      // loop thru and parse each NBT/structure file
+      final String structuresFolderPath = MayorConfig.getStructuresFolderPath(this);
+      HashMap<String, DefinedStructure> readStructures = new HashMap<String, DefinedStructure>();
+      for (File file : structureFiles) {
+          String fileName = file.getName();
+          File structureFile = config.readFile(structuresFolderPath, fileName);
+          try {
+            DefinedStructure readStructure = MayorStructureHandler.loadSingleStructure(structureFile);
+            readStructures.put(fileName, readStructure);
+          } catch (Exception e) {
+            String errorMessage = ExceptionUtils.getStackTrace(e);
+            getLogger().info(String.format(":( error reading structure file %s: %s", fileName, errorMessage));
+          }
+      }
+
+      return readStructures;
     }
 }

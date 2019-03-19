@@ -38,12 +38,12 @@ clean:
 	mkdir $(SERVER_PATH)
 	echo "eula=true" > $(SERVER_PATH)/eula.txt
 	cp -R $(EXTERNAL_PATH)/$(CRAFTBUKKIT_JAR_FILENAME) $(SERVER_PATH)/$(CRAFTBUKKIT_JAR_FILENAME)
+	#-rm -r -f $(SERVER_PATH)/plugins/*.jar
 
 .PHONY: server
 server:
 	# step 6 copy the JAR file into the server to run it!
-	-rm -r -f $(SERVER_PATH)/plugins/*.jar
-	cp -R $(BUILD_PATH)/$(OUTPUT_VERSIONED_NAME).jar $(SERVER_PATH)/plugins/$(OUTPUT_VERSIONED_NAME).jar
+	-cp -R $(BUILD_PATH)/$(OUTPUT_VERSIONED_NAME).jar $(SERVER_PATH)/plugins/$(OUTPUT_VERSIONED_NAME).jar
 	cd $(SERVER_PATH) && java -Xms1G -Xmx1G -jar -DIReallyKnowWhatIAmDoingISwear $(CRAFTBUKKIT_JAR_FILENAME)
 
 .PHONY: nbted
