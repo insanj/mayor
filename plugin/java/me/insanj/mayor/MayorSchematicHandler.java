@@ -29,20 +29,6 @@ public class MayorSchematicHandler {
         this.plugin = plugin;
     }
 
-    public MayorSchematic readSchematicFile(String name) {
-        if (!name.endsWith(".schematic")) {
-            name = name + ".schematic";
-        }
-
-        String filePath = MayorConfig.getSchematicsFolderPath(plugin) + name;
-        File file = new File(filePath);
-        if (!file.exists()) {
-            return null;
-        }
-
-        return readSchematicFile(name, file);
-    }
-
     public MayorSchematic readSchematicFile(String name, File file) {
         try {
             FileInputStream stream = new FileInputStream(file);

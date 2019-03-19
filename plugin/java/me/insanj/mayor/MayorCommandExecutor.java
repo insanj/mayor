@@ -27,17 +27,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.FluidCollisionMode;
 
-import com.github.shynixn.structureblocklib.bukkit.api.StructureBlockApi;
-import com.github.shynixn.structureblocklib.bukkit.api.persistence.entity.StructureSaveConfiguration;
-import com.github.shynixn.structureblocklib.bukkit.api.business.service.PersistenceStructureService;
+import net.minecraft.server.v1_13_R2.EnumBlockRotation;
+import net.minecraft.server.v1_13_R2.DefinedStructure;
 
 class MayorCommandExecutor implements CommandExecutor {
   public final MayorSchematicHandler handler;
   public final HashMap<String, MayorSchematic> schematics;
+  public final HashMap<String, DefinedStructure> structures;
 
-    public MayorCommandExecutor(MayorSchematicHandler handler, HashMap<String, MayorSchematic> schematics) {
+    public MayorCommandExecutor(MayorSchematicHandler handler, HashMap<String, MayorSchematic> schematics, HashMap<String, DefinedStructure> structures) {
         this.handler = handler;
         this.schematics = schematics;
+        this.structures = structures;
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -53,19 +54,15 @@ class MayorCommandExecutor implements CommandExecutor {
 
         Player player = (Player) sender;
         if (args[0].equals("structure")) {
-          Location target = player.getLocation();
-          PersistenceStructureService service = StructureBlockApi.INSTANCE.getStructurePersistenceService();
-
-          String structureAuthor = player.getName();
           String structureName = args[1];
-          String structureWorldName = target.getWorld().getName();
-
-          final StructureSaveConfiguration saveConfiguration = service.createSaveConfiguration(structureAuthor, structureName, structureWorldName);
-          boolean structureExists = service.load(saveConfiguration, target);
-          if (structureExists == false) {
+          DefinedStructure structure = structures.get(structureName);
+          if (structure == null) {
             sender.sendMessage(ChatColor.RED + "No structure found with the name: " + structureName);
             return false;
           }
+
+          Location location = player.getLocation();
+          MayorStructureHandler.insertSingleStructure(structure, location, EnumBlockRotation.NONE);
           return true;
         }
 

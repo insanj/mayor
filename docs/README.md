@@ -73,6 +73,7 @@ A lot of important work parsing and building structures from .schematic/NBT file
 - https://bukkit.org/threads/pasting-loading-schematics.87129/
 - https://www.spigotmc.org/threads/converting-item-id-and-damage-value-to-new-material-type.329614/
 - https://bukkit.org/threads/so-block-setdata-is-deprecated-whats-the-new-way-to-change-the-data-of-an-existing-block.189076/
+- https://www.spigotmc.org/threads/tutorial-example-handle-structures.331243/
 
 ## Authors
 

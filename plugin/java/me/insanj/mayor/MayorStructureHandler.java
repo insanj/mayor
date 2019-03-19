@@ -1,12 +1,27 @@
 package me.insanj.mayor;
 
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+
+import java.util.Random;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.bukkit.Location;
+import org.bukkit.World;
+
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 
 import net.minecraft.server.v1_13_R2.Block;
 import net.minecraft.server.v1_13_R2.BlockPosition;
 import net.minecraft.server.v1_13_R2.ChunkCoordIntPair;
 import net.minecraft.server.v1_13_R2.DefinedStructure;
+import net.minecraft.server.v1_13_R2.DefinedStructureManager;
 import net.minecraft.server.v1_13_R2.DefinedStructureInfo;
 import net.minecraft.server.v1_13_R2.EnumBlockMirror;
 import net.minecraft.server.v1_13_R2.EnumBlockRotation;
@@ -20,6 +35,7 @@ import net.minecraft.server.v1_13_R2.WorldServer;
 import net.minecraft.server.v1_13_R2.DefinedStructure;
 import net.minecraft.server.v1_13_R2.NBTCompressedStreamTools;
 import net.minecraft.server.v1_13_R2.NBTTagCompound;
+import net.minecraft.server.v1_13_R2.EnumBlockRotation;
 
 // https://www.spigotmc.org/threads/tutorial-example-handle-structures.331243/
 class MayorStructureHandler {
@@ -41,12 +57,15 @@ class MayorStructureHandler {
     * @return DefinedStructure - The new instance
     * @deprecated Only for pre1.13, uses the NMS 1.13 DataFixer to convert stuff
     */
-  @Deprecated
-  public static DefinedStructure loadLegacySingleStructure(File source, World world) throws FileNotFoundException, IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+  /*@Deprecated
+  public static DefinedStructure loadLegacySingleStructure(File source, World world) throws Exception {
+
+    // FileNotFoundException, IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+
       Method parseAndConvert = DefinedStructureManager.class.getDeclaredMethod("a", InputStream.class);
       parseAndConvert.setAccessible(true);
       return (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().C(), new FileInputStream(source));
-  }
+  }*/
 
   /**
  * Creates a single structure of maximum 32x32x32 blocks.
@@ -56,10 +75,10 @@ class MayorStructureHandler {
   */
   public static DefinedStructure createSingleStructure(Location[] corners, String author) {
       if (corners.length != 2) throw new IllegalArgumentException("An area needs to be set up by exactly 2 opposite edges!");
-      Location[] normalized = StructureService.normalizeEdges(corners[0], corners[1]); // find this method at the end of the tutorial
+      Location[] normalized = MayorStructureHandler.normalizeEdges(corners[0], corners[1]); // find this method at the end of the tutorial
       // ^^ This is juggling the coordinates, so the first is the Corner with lowest x, y, z and the second has the highest x, y, z.
       WorldServer world = ((CraftWorld) normalized[0].getWorld()).getHandle();
-      int[] dimensions = StructureService.getDimensions(normalized); // find this method at the end of the tutorial
+      int[] dimensions = MayorStructureHandler.getDimensions(normalized); // find this method at the end of the tutorial
       if (dimensions[0] > 32 || dimensions[1] > 32 || dimensions[2] > 32) throw new IllegalArgumentException("A single structure can only be 32x32x32!");
       DefinedStructure structure = new DefinedStructure();
       structure.a(world, new BlockPosition(normalized[0].getBlockX(), normalized[0].getBlockY(), normalized[0].getBlockZ()), new BlockPosition(dimensions[0], dimensions[1], dimensions[2]), true, Blocks.STRUCTURE_VOID);
