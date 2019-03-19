@@ -33,7 +33,9 @@ public class MayorSchematicHandler {
         if (!name.endsWith(".schematic")) {
             name = name + ".schematic";
         }
-        File file = new File(plugin.getDataFolder() + "/" + name);
+
+        String filePath = MayorConfig.getSchematicsFolderPath(plugin) + name;
+        File file = new File(filePath);
         if (!file.exists()) {
             return null;
         }

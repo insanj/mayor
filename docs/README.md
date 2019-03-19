@@ -2,24 +2,35 @@
 <h3 align="center">🐘  turn villagers into powerful city builders</h3>
 
 <p align="center">
-  <a href="https://getbukkit.org/download/spigot">
-    <img src="https://img.shields.io/badge/minecraft-1.13.2-brown.svg" />
+  <a href="https://github.com/insanj/mayor/releases">
+    <img src="https://img.shields.io/github/release/insanj/mayor.svg" />
+    <img src="https://img.shields.io/github/release-date/insanj/mayor.svg" />
   </a>
 
-  <a href="https://getbukkit.org/download/spigot">
-    <img src="https://img.shields.io/badge/spigot-1.13-orange.svg" />
+  <a href="https://github.com/insanj/mayor/">
+    <img src="https://img.shields.io/github/languages/code-size/insanj/mayor.svg" />
   </a>
 
-  <a href="https://getbukkit.org/download/craftbukkit">
-    <img src="https://img.shields.io/badge/craftbukkit-1.13.2-blue.svg" />
+  <br/>
+
+  <a href="https://github.com/insanj/mayor/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/insanj/mayor.svg" />
   </a>
 
   <a href="https://jdk.java.net/">
-    <img src="https://img.shields.io/badge/java-8-red.svg" />
+    <img src="https://img.shields.io/badge/java-8-yellow.svg" />
   </a>
 
-  <a href="https://www.spigotmc.org/resources/">
-    <img src="https://img.shields.io/badge/🚀-Download%20on%20spigotmc.org-green.svg" />
+  <a href="https://getbukkit.org/download/craftbukkit">
+    <img src="https://img.shields.io/badge/minecraft-1.13-purple.svg" />
+  </a>
+
+  <a href="https://getbukkit.org/download/craftbukkit">
+    <img src="https://img.shields.io/badge/craftbukkit-v1_13_R2-blue.svg" />
+  </a>
+
+  <a href="https://github.com/insanj/mayor/releases">
+    <img src="https://img.shields.io/badge/🚀-Download%20on%20Github-red.svg" />
   </a>
 </p>
 

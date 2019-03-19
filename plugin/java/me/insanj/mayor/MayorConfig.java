@@ -22,14 +22,18 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class MayorConfig {
     private final MayorPlugin plugin;
-    private final String SCHEMATICS_PATH = "schematics";
+    private static final String SCHEMATICS_PATH = "schematics";
 
     public MayorConfig(MayorPlugin plugin) {
         this.plugin = plugin;
     }
 
+    public static String getSchematicsFolderPath(JavaPlugin plugin) {
+        return String.format("%s/%s/", plugin.getDataFolder(), SCHEMATICS_PATH);
+    }
+
     public ArrayList<File> getSchematicFiles() {
-        String pluginDataFolderPath = String.format("%s/%s/", plugin.getDataFolder(), SCHEMATICS_PATH);
+        String pluginDataFolderPath = MayorConfig.getSchematicsFolderPath(plugin);
         File pluginDataFolder = new File(pluginDataFolderPath);
         if (!pluginDataFolder.exists()) {
             pluginDataFolder.mkdir();
