@@ -9,7 +9,9 @@ BUILD_PATH=build
 EXTERNAL_PATH=external
 SPIGOT_JAR_FILENAME=spigot-1.13.2.jar
 CRAFTBUKKIT_JAR_FILENAME=craftbukkit-1.13.2.jar
-JAR_DEPS_PATH=$(EXTERNAL_PATH)/$(SPIGOT_JAR_FILENAME):$(EXTERNAL_PATH)/$(CRAFTBUKKIT_JAR_FILENAME)
+STRUCTURE_BLOCK_LIB_FILENAME=StructureBlockLib-1.8.2.jar
+JAR_MANIFEST_FILENAME=plugin/mayor.mf
+JAR_DEPS_PATH=$(EXTERNAL_PATH)/$(SPIGOT_JAR_FILENAME):$(EXTERNAL_PATH)/$(CRAFTBUKKIT_JAR_FILENAME):$(EXTERNAL_PATH)/$(STRUCTURE_BLOCK_LIB_FILENAME)
 GIT_TAG:=$(shell git describe --tags)
 OUTPUT_VERSIONED_NAME=$(OUTPUT_NAME)-$(GIT_TAG)
 SERVER_PATH=server
@@ -28,8 +30,9 @@ plugin:
 	$(JAVAC_CMD) -cp "$(JAR_DEPS_PATH)" -d $(BUILD_PATH)/bin $(FIND_JAVA_FILES)
 	# step 3 copy config .yml to a new "build in progress" directory
 	-cp -r $(SOURCE_PATH)/*.yml $(BUILD_PATH)/bin/
+	-cp -r $(EXTERNAL_PATH)/$(STRUCTURE_BLOCK_LIB_FILENAME) $(BUILD_PATH)/bin/
 	# step 4 create JAR file using the "build in progress" folder
-	$(JAR_CMD) -cvf $(BUILD_PATH)/$(OUTPUT_VERSIONED_NAME).jar -C $(BUILD_PATH)/bin .
+	$(JAR_CMD) -cvfm $(BUILD_PATH)/$(OUTPUT_VERSIONED_NAME).jar $(JAR_MANIFEST_FILENAME) -C $(BUILD_PATH)/bin .
 
 .PHONY: clean
 clean:
@@ -42,7 +45,7 @@ clean:
 .PHONY: server
 server:
 	# step 6 copy the JAR file into the server to run it!
-	-rm -r -f $(SERVER_PATH)/plugins/*.jar && mkdir $(SERVER_PATH)/plugins
+	-rm -r -f $(SERVER_PATH)/plugins/*.jar
 	cp -R $(BUILD_PATH)/$(OUTPUT_VERSIONED_NAME).jar $(SERVER_PATH)/plugins/$(OUTPUT_VERSIONED_NAME).jar
 	cd $(SERVER_PATH) && java -Xms1G -Xmx1G -jar -DIReallyKnowWhatIAmDoingISwear $(CRAFTBUKKIT_JAR_FILENAME)
 

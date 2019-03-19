@@ -27,9 +27,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.FluidCollisionMode;
 
-public class MayorPlugin extends JavaPlugin implements CommandExecutor {
+public class MayorPlugin extends JavaPlugin {
     public MayorConfig config = new MayorConfig(this);
     public MayorSchematicHandler handler = new MayorSchematicHandler(this);
+    public MayorCommandExecutor executor;
     public HashMap<String, MayorSchematic> schematics;
 
     @Override
@@ -46,43 +47,11 @@ public class MayorPlugin extends JavaPlugin implements CommandExecutor {
         }
 
         // (3) print out all the files so we can see what we got
-        System.out.println(readSchematics.toString());
+        getLogger().info(readSchematics.toString());
         schematics = readSchematics;
 
         // (4) testing commands to generate schematics/structures
-        getCommand("mayor").setExecutor(this);
-    }
-
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "No schematic name provided");
-            return false;
-        }
-
-        else if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "Only players can execute this command");
-            return false;
-        }
-
-        else if (schematics == null || schematics.size() <= 0) {
-            sender.sendMessage(ChatColor.RED + "No schematics found in /plugins/mayor/");
-            return false;
-        }
-
-        Player player = (Player) sender;
-        MayorSchematic schematic = schematics.get(args[0]);
-        if (schematic == null) {
-            sender.sendMessage(ChatColor.RED + "Could not find schematic with name: " + args[0]);
-            return false;
-        }
-
-        Location lookingLocation = player.getTargetBlockExact(100, FluidCollisionMode.NEVER).getLocation(); // player.getLocation();
-        if (lookingLocation == null) {
-          sender.sendMessage(ChatColor.RED + "No target block found, make sure you're looking somewhere I can build!");
-          return false;
-        }
-
-        handler.pasteSchematic(player.getWorld(), lookingLocation, schematic);
-        return true;
+        executor = new MayorCommandExecutor(handler, schematics);
+        getCommand("mayor").setExecutor(executor);
     }
 }
