@@ -64,6 +64,4 @@ class MayorVillagerHandler {
     boolean spawnSuccess = builtVillager.finish();
     return spawnSuccess;
   }*/
-
-
 }
