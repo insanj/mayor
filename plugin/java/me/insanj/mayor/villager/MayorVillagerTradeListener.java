@@ -26,15 +26,13 @@ class MayorVillagerTradeListener implements Listener {
   private final MayorPlugin plugin;
   private final HashMap<String, MayorSchematic> schematics;
   private final HashMap<String, DefinedStructure> structures;
-  private final MayorSchematicBuilder schematicBuilder;
-  private final MayorStructureBuilder structureBuilder;
+  private final MayorBuildCoordinator buildCoordinator;
 
-  public MayorVillagerTradeListener(MayorPlugin plugin, HashMap<String, MayorSchematic> schematics, HashMap<String, DefinedStructure> structures, MayorSchematicBuilder schematicBuilder, MayorStructureBuilder structureBuilder) {
+  public MayorVillagerTradeListener(MayorPlugin plugin, HashMap<String, MayorSchematic> schematics, HashMap<String, DefinedStructure> structures, MayorBuildCoordinator buildCoordinator) {
     this.plugin = plugin;
     this.schematics = schematics;
     this.structures = structures;
-    this.schematicBuilder = schematicBuilder;
-    this.structureBuilder = structureBuilder;
+    this.buildCoordinator = buildCoordinator;
   }
 
   @EventHandler
@@ -42,11 +40,7 @@ class MayorVillagerTradeListener implements Listener {
     if (event.getEntity().getName().equals("Mayor")) {
       plugin.getServer().broadcastMessage(ChatColor.GREEN + "The Mayor has agreed to build a new structure!");
       event.getEntity().setCustomName(null);
-
-      Location location = event.getEntity().getLocation();
-      MayorSchematic schematic = schematics.get("tower.schematic");
-      schematicBuilder.locateAndBuildSchematic(schematic, location);
-      //plugin.schematicHandler.locateAndBuildStructure(structure, location);
+      buildCoordinator.coordinate(event.getEntity().getLocation());
     }
   }
 
