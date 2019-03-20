@@ -38,40 +38,15 @@ import net.minecraft.server.v1_13_R2.NBTTagCompound;
 import net.minecraft.server.v1_13_R2.EnumBlockRotation;
 import net.minecraft.server.v1_13_R2.DefinedStructure;
 
-public class MayorBuildHandler {
-  private final MayorPlugin plugin;
-  private final int LOCATE_CONFIG_DEFAULT_RANGE = 25;
-  private final int BUILD_CONFIG_DEFAULT_BPS = 1;
-
-  public LocateConfig locateConfig = new LocateConfig(LOCATE_CONFIG_DEFAULT_RANGE);
-  public BuildConfig buildConfig = new BuildConfig(BUILD_CONFIG_DEFAULT_BPS);
-
-  public MayorBuildHandler(MayorPlugin plugin) {
-    this.plugin = plugin;
+public class MayorStructureBuilder extends MayorBuilder {
+  private MayorStructureHandler structureHandler;
+  
+  public MayorStructureBuilder(MayorPlugin plugin, MayorStructureHandler structureHandler) {
+    super(plugin);
+    this.structureHandler = structureHandler;
   }
 
-  class LocateConfig {
-    private final int range;
-    public LocateConfig(int range) {
-      this.range = range;
-    }
-    public int getRange() {
-      return range;
-    }
-  }
-
-  class BuildConfig {
-    private final int blocksPerSecond;
-    public BuildConfig(int blocksPerSecond) {
-      this.blocksPerSecond = blocksPerSecond;
-    }
-
-    public int getBlocksPerSecond() {
-      return blocksPerSecond;
-    }
-  }
-
-  public void locateAndBuildStructure(MayorStructure structure, Location location) {
+  public void locateAndBuildStructure(DefinedStructure structure, Location location) {
     WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
     DefinedStructureInfo structInfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(EnumBlockRotation.NONE).a(false).a((ChunkCoordIntPair) null).a((Block) null).c(false).a(1.0f).a(new Random());
 

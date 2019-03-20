@@ -44,12 +44,12 @@ class MayorStructureHandler {
   * @param source - The structure file
   * @return DefinedStructure - The new instance
   */
-  public static MayorStructure loadSingleStructure(File source) throws FileNotFoundException, IOException {
+  public static DefinedStructure loadSingleStructure(File source) throws FileNotFoundException, IOException {
     if (source == null) {
       throw new FileNotFoundException("Mayor cannot load structure when source file providing as parameter is null itself :(");
     }
 
-    MayorStructure structure = new MayorStructure();
+    DefinedStructure structure = new DefinedStructure();
     structure.b(NBTCompressedStreamTools.a(new FileInputStream(source)));
     return structure;
   }
@@ -84,7 +84,7 @@ class MayorStructureHandler {
       WorldServer world = ((CraftWorld) normalized[0].getWorld()).getHandle();
       int[] dimensions = MayorStructureHandler.getDimensions(normalized); // find this method at the end of the tutorial
       if (dimensions[0] > 32 || dimensions[1] > 32 || dimensions[2] > 32) throw new IllegalArgumentException("A single structure can only be 32x32x32!");
-      MayorStructure structure = new MayorStructure();
+      DefinedStructure structure = new DefinedStructure();
       structure.a(world, new BlockPosition(normalized[0].getBlockX(), normalized[0].getBlockY(), normalized[0].getBlockZ()), new BlockPosition(dimensions[0], dimensions[1], dimensions[2]), true, Blocks.STRUCTURE_VOID);
       structure.a(author); // may not be saved to file anymore since 1.13
       return structure;

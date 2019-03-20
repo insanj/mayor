@@ -1,5 +1,7 @@
 package me.insanj.mayor;
 
+import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Location;
@@ -22,9 +24,17 @@ import net.minecraft.server.v1_13_R2.InventoryMerchant;
 
 class MayorVillagerTradeListener implements Listener {
   private final MayorPlugin plugin;
+  private final HashMap<String, MayorSchematic> schematics;
+  private final HashMap<String, DefinedStructure> structures;
+  private final MayorSchematicBuilder schematicBuilder;
+  private final MayorStructureBuilder structureBuilder;
 
-  public MayorVillagerTradeListener(MayorPlugin plugin) {
+  public MayorVillagerTradeListener(MayorPlugin plugin, HashMap<String, MayorSchematic> schematics, HashMap<String, DefinedStructure> structures, MayorSchematicBuilder schematicBuilder, MayorStructureBuilder structureBuilder) {
     this.plugin = plugin;
+    this.schematics = schematics;
+    this.structures = structures;
+    this.schematicBuilder = schematicBuilder;
+    this.structureBuilder = structureBuilder;
   }
 
   @EventHandler
@@ -34,8 +44,8 @@ class MayorVillagerTradeListener implements Listener {
       event.getEntity().setCustomName(null);
 
       Location location = event.getEntity().getLocation();
-      MayorSchematic schematic = plugin.schematics.get("tower.schematic");
-      plugin.schematicHandler.pasteSchematic(event.getEntity().getWorld(), location, schematic);
+      MayorSchematic schematic = schematics.get("tower.schematic");
+      schematicBuilder.locateAndBuildSchematic(schematic, location);
       //plugin.schematicHandler.locateAndBuildStructure(structure, location);
     }
   }

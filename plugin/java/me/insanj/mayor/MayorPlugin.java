@@ -32,26 +32,36 @@ import net.minecraft.server.v1_13_R2.DefinedStructure;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 public class MayorPlugin extends JavaPlugin {
-    public MayorConfig config = new MayorConfig(this);
-    public MayorSchematicHandler schematicHandler = new MayorSchematicHandler(this);
-    public MayorVillagerHandler villagerHandler = new MayorVillagerHandler(this);
-    public MayorBuildHandler buildHandler = new MayorBuildHandler(this);
-    public MayorVillagerTradeListener tradeListener = new MayorVillagerTradeListener(this);
-    public MayorCommandExecutor executor;
-    public HashMap<String, MayorSchematic> schematics;
-    public HashMap<String, MayorStructure> structures;
+    private final MayorConfig config = new MayorConfig(this);
+
+    private final MayorSchematicHandler schematicHandler = new MayorSchematicHandler(this);
+    private final MayorStructureHandler structureHandler = new MayorStructureHandler();
+    private final MayorVillagerHandler villagerHandler = new MayorVillagerHandler(this);
+
+    private MayorVillagerTradeListener tradeListener;
+    private MayorCommandExecutor executor;
+
+    private MayorSchematicBuilder schematicBuilder;
+    private MayorStructureBuilder structureBuilder;
+
+    private HashMap<String, MayorSchematic> schematics;
+    private HashMap<String, DefinedStructure> structures;
 
     @Override
     public void onEnable() {
-      // (1) load all schematics from disk
-      schematics = readSchematics();
-      getLogger().info("-> finished reading .schematics! " + schematics.toString());
-
-      // (2) load all structures from
+      // (1) load all structures from
       structures = readStructures();
+      structureBuilder = new MayorStructureBuilder(this, structureHandler);
       getLogger().info("-> finished reading structure .nbts! " + structures.toString());
 
+      // (2) load all schematics from disk
+      schematics = readSchematics();
+      schematicBuilder = new MayorSchematicBuilder(this, schematicHandler);
+      getLogger().info("-> finished reading .schematics! " + schematics.toString());
+
+
       // (3) add trade listener to activate mayor villagers
+      tradeListener = new MayorVillagerTradeListener(this, schematics, structures, schematicBuilder, structureBuilder);
       Bukkit.getPluginManager().registerEvents(tradeListener, this);
 
       // (4) testing commands to generate schematics/structures
@@ -74,16 +84,16 @@ public class MayorPlugin extends JavaPlugin {
       return readSchematics;
     }
 
-    private HashMap<String, MayorStructure> readStructures() {
+    private HashMap<String, DefinedStructure> readStructures() {
       ArrayList<File> structureFiles = config.getStructureFiles();
 
       // loop thru and parse each NBT/structure file
       final String structuresFolderPath = MayorConfig.getStructuresFolderPath(this);
-      HashMap<String, MayorStructure> readStructures = new HashMap<String, MayorStructure>();
+      HashMap<String, DefinedStructure> readStructures = new HashMap<String, DefinedStructure>();
       for (File file : structureFiles) {
           String fileName = file.getName();
           try {
-            MayorStructure readStructure = MayorStructureHandler.loadSingleStructure(file);
+            DefinedStructure readStructure = MayorStructureHandler.loadSingleStructure(file);
             readStructures.put(fileName, readStructure);
           } catch (Exception e) {
             String errorMessage = ExceptionUtils.getStackTrace(e);

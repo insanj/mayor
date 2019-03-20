@@ -33,10 +33,10 @@ import net.minecraft.server.v1_13_R2.DefinedStructure;
 class MayorCommandExecutor implements CommandExecutor {
   public final MayorSchematicHandler handler;
   public final HashMap<String, MayorSchematic> schematics;
-  public final HashMap<String, MayorStructure> structures;
+  public final HashMap<String, DefinedStructure> structures;
   private final MayorVillagerHandler villagerHandler;
 
-  public MayorCommandExecutor(MayorSchematicHandler handler, HashMap<String, MayorSchematic> schematics, HashMap<String, MayorStructure> structures, MayorVillagerHandler villagerHandler) {
+  public MayorCommandExecutor(MayorSchematicHandler handler, HashMap<String, MayorSchematic> schematics, HashMap<String, DefinedStructure> structures, MayorVillagerHandler villagerHandler) {
     this.handler = handler;
     this.schematics = schematics;
     this.structures = structures;
@@ -80,7 +80,7 @@ class MayorCommandExecutor implements CommandExecutor {
       }
 
       String structureName = argumentString;
-      MayorStructure structure = structures.get(structureName);
+      DefinedStructure structure = structures.get(structureName);
       if (structure == null) {
         sender.sendMessage(ChatColor.RED + "No structure found with the name: " + structureName);
         return false;
