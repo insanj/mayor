@@ -80,6 +80,7 @@ A lot of important work parsing and building structures from .schematic/NBT file
 - https://dev.bukkit.org/projects/villager-trade-api
 - https://bukkit.org/threads/how-to-tell-if-user-clicks-top-or-bottom-inventory.112822/
 - https://www.spigotmc.org/threads/inventoryclickevent-get-villager-trade.284605/
+- https://stackoverflow.com/questions/2258891/how-to-access-the-private-variables-of-a-class-in-its-subclass
 
 ## Authors
 

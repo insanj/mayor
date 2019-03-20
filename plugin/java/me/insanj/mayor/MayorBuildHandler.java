@@ -74,7 +74,10 @@ public class MayorBuildHandler {
   public void locateAndBuildStructure(MayorStructure structure, Location location) {
     WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
     BlockPosition pos = new BlockPosition(location.getX(), location.getY(), location.getZ());
-    DefinedStructureInfo structInfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(rotation).a(false).a((ChunkCoordIntPair) null).a((Block) null).c(false).a(1.0f).a(new Random());
-    structure.mayorBuild(world, pos, structInfo, buildConfig);
+    try {
+      structure.mayorBuild(world, pos, buildConfig);
+    } catch (Exception e) {
+      plugin.logError(e);
+    }
   }
 }
