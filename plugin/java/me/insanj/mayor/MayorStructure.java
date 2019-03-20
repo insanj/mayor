@@ -60,7 +60,7 @@ public class MayorStructure extends DefinedStructure {
     DefinedStructureInfo definedstructureinfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(rotation).a(false).a((ChunkCoordIntPair) null).a((Block) null).c(false).a(1.0f).a(new Random());
     definedstructureinfo.i();
 
-    List a = (List) readPrivateSuperClassField("a");
+    List<DefinedStructure.BlockInfo> a = (List<DefinedStructure.BlockInfo>) readPrivateSuperClassField("b");
     BlockPosition c = (BlockPosition) readPrivateSuperClassField("c");
 
     if (!a.isEmpty() && c.getX() >= 1 && c.getY() >= 1 && c.getZ() >= 1) {
