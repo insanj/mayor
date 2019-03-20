@@ -24,8 +24,10 @@ public class MayorBuildCoordinator {
   }
 
   public void coordinate(Location location) {
-    boolean useSchematic = false;
+    coordinate(location, false);
+  }
 
+  public void coordinate(Location location, boolean useSchematic) {
     if (useSchematic == true) {
       MayorSchematic schematic = schematics.get("tower.schematic");
       schematicBuilder.locateAndBuildSchematic(schematic, location);
