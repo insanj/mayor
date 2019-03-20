@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -77,6 +78,8 @@ public class MayorSchematicHandler {
         short width = schematic.width;
         short height = schematic.height;
 
+        int delay = 0;
+
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
                 for (int z = 0; z < length; ++z) {
@@ -95,11 +98,16 @@ public class MayorSchematicHandler {
                       continue;
                     }
 
-                    block.setType(material);
+                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                      public void run() {
+                        block.setType(material);
+   
+                        BlockState bs = block.getState();
+                        bs.setRawData(blockData[index]);
+                        bs.update(true);
+                      }
+                    }, delay++);
 
-                    BlockState bs = block.getState();
-                    bs.setRawData(blockData[index]);
-                    bs.update(true);
                 }
             }
         }

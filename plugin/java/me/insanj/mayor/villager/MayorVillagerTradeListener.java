@@ -31,10 +31,12 @@ class MayorVillagerTradeListener implements Listener {
   public void onVillagerReplenishTrade(VillagerReplenishTradeEvent event) {
     if (event.getEntity().getName().equals("Mayor")) {
       plugin.getServer().broadcastMessage(ChatColor.GREEN + "The Mayor has agreed to build a new structure!");
+      event.getEntity().setCustomName(null);
 
       Location location = event.getEntity().getLocation();
-      MayorStructure structure = plugin.structures.get("tree.nbt");
-      plugin.buildHandler.locateAndBuildStructure(structure, location);
+      MayorSchematic schematic = plugin.schematics.get("tower.schematic");
+      plugin.schematicHandler.pasteSchematic(event.getEntity().getWorld(), location, schematic);
+      //plugin.schematicHandler.locateAndBuildStructure(structure, location);
     }
   }
 

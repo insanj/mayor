@@ -43,6 +43,8 @@ import net.minecraft.server.v1_13_R2.IBlockData;
 import net.minecraft.server.v1_13_R2.IInventory;
 
 public class MayorStructure extends DefinedStructure {
+
+  /*
   private Object readPrivateSuperClassField(String fieldName) throws Exception {
       return readPrivateSuperClassField(this.getClass(), fieldName);
   }
@@ -64,7 +66,7 @@ public class MayorStructure extends DefinedStructure {
     BlockPosition c = (BlockPosition) readPrivateSuperClassField("c");
 
     if (!a.isEmpty() && c.getX() >= 1 && c.getY() >= 1 && c.getZ() >= 1) {
-        Block block =definedstructureinfo.i(); // prev: f
+        Block block = definedstructureinfo.i(); // prev: f
         StructureBoundingBox structureboundingbox = definedstructureinfo.j(); // prev: g
         Iterator iterator = a.iterator();
 
@@ -134,6 +136,6 @@ public class MayorStructure extends DefinedStructure {
         }
 
 */
-    }
-  }
+//    }
+  //}
 }
